@@ -15,6 +15,7 @@ BASE_URL = 'https://help.steampowered.com/pl/wizard/HelpWithGameTechnicalIssue?a
 
 data = {
         'Game_ID': '',
+        'Game_name': '',
         'Steam_game_url': '',
         'Customer_service_page': '',
         'Product_page': '',
@@ -31,6 +32,7 @@ fieldnames = data.keys()
 def scrape_data(url):
     data = {
         'Game_ID': '',
+        'Game_name': '',
         'Steam_game_url': '',
         'Customer_service_page': '',
         'Product_page': '',
@@ -52,6 +54,10 @@ def scrape_data(url):
         data['Customer_service_page'] = customer
     except:
         data['Customer_service_page'] = ''
+    try:
+        data['Game_name'] = soup.find('div', class_='subbox_left').text.strip()
+    except:
+        data['Game_name'] = ''
     try:
         product_page = sub.find('div', class_='help_official_support_row help_whitelight_text').find('a')['href']
         data['Product_page'] = product_page
@@ -105,7 +111,7 @@ def write_to_csv(filename, data):
 
 def main():
     results = scrape_urls(urls)
-    write_to_csv('results.csv', results)
+    write_to_csv('new_results.csv', results)
 
 if __name__ == '__main__':
     main()
